@@ -1,0 +1,25 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: mosquitto
+  namespace: things
+  labels:
+    app: mosquitto
+  annotations:
+    # ingress.kubernetes.io/auth-secret: discourse-basic-auth
+    # ingress.kubernetes.io/auth-type: basic
+    # ingress.kubernetes.io/auth-realm: "thisone"
+    # kubernetes.io/tls-acme: "true"
+spec:
+  rules:
+  - host: mosquitto.things.local
+    http:
+      paths:
+      - backend:
+          serviceName: mosquitto
+          servicePort: mosquitto
+        path: /
+  # tls:
+  # - secretName: discourse-tls
+  #   hosts:
+  #   - discourse.thisone.rocks

@@ -1,0 +1,32 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: homeassistant
+  namespace: homeassistant
+  labels:
+    app: homeassistant
+  annotations:
+    # ingress.kubernetes.io/auth-secret: discourse-basic-auth
+    # ingress.kubernetes.io/auth-type: basic
+    # ingress.kubernetes.io/auth-realm: "thisone"
+    # kubernetes.io/tls-acme: "true"
+spec:
+  rules:
+  - host: homeassistant.things.local
+    http:
+      paths:
+      - backend:
+          serviceName: homeassistant
+          servicePort: 8123
+        path: /
+  # - host: admin.influxdb.things.local
+  #   http:
+  #     paths:
+  #     - backend:
+  #         serviceName: influxdb
+  #         servicePort: admin
+  #       path: /
+  # tls:
+  # - secretName: discourse-tls
+  #   hosts:
+  #   - discourse.thisone.rocks

@@ -1,0 +1,37 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: mosquitto
+  namespace: things
+  labels:
+    app: mosquitto
+    # component: main
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: mosquitto
+      labels:
+        app: mosquitto
+        # component: main
+    spec:
+      containers:
+      - name: server
+        image: eclipse-mosquitto:1.4.10
+        ports:
+        - name: mosquitto
+          containerPort: 1883
+        # - name: dontknow
+        #   containerPort: 9001
+        volumeMounts:
+        - name: config
+          mountPath: /mosquitto/config
+        - name: data
+          mountPath: /mosquitto/data
+      volumes:
+      - name: config
+        configMap:
+          name: mosquitto
+      - name: data
+        hostPath:
+          path: /srv/things-mosquitto-data

@@ -1,0 +1,36 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: telegraf
+  namespace: things
+  labels:
+    app: telegraf
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: telegraf
+    spec:
+      containers:
+      - image: telegraf:1.1-alpine
+        name: telegraf
+        ports:
+        - name: statsd
+          containerPort: 8125
+        - name: udp
+          containerPort: 8092
+        - name: tcp
+          containerPort: 8094
+        volumeMounts:
+        - name: config
+          mountPath: /etc/telegraf
+        # - name: data
+        #   mountPath: /var/lib/influxdb
+      volumes:
+      - name: config
+        configMap:
+          name: telegraf
+      # - name: data
+      #   hostPath:
+      #     path: /srv/influxdb-data
